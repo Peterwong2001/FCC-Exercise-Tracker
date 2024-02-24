@@ -34,20 +34,7 @@ let exerciseTracker = mongoose.model("exerciseTracker", exerciseTrackerSchema);
 
 let resObj = {};
 
-app.post("/api/users", function(req, res) {
-  
-  let inputCount = 1;
-  
-  exerciseTracker.findOne({})
-                  .sort({username: 1})
-                  .exec(function(err, result) {
-                    if (!err && result != undefined) {
-                      inputCount = result.count + 1;
-                    }
-                  if (!err) {
-                    exerciseTracker.findOneAndUpdate(
-                      {}
-                    )
-                  }
-  })
+
+app.get("/api/users", function(res, req) {
+  res.json(resObj);
 })
