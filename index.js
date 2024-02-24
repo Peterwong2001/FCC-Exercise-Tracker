@@ -35,6 +35,6 @@ let exerciseTracker = mongoose.model("exerciseTracker", exerciseTrackerSchema);
 let resObj = {};
 
 
-app.get("/api/users", function(res, req) {
+app.post("/api/users/:get", function(res, req) {
   res.json(resObj);
 })
