@@ -35,14 +35,22 @@ let userSchema = new mongoose.Schema({
   log: [exerciseTrackerSchema]
 })
 
-let tracker = mongoose.model("Tracker", exerciseTrackerSchema);
-let user = mongoose.model("Username", userSchema);
+let ExerciseTracker = mongoose.model("Tracker", exerciseTrackerSchema);
+let User = mongoose.model("User", userSchema);
 
 let resObj = {};
 
-app.post("api/users", bodyParser.urlencoded({extended: false}), function(req, res) {
+app.post("/api/users", bodyParser.urlencoded({ extended: false }), function(req, res) {
+  let newUser = new User({username: req.body.username})
+  newUser.save(function(err, saved) {
+    if(!err) {
+      resObj["username"] = saved.username
+      resObj["id"] = saved.id
+      res.json()
+    }
+  })
   
-  res.json({})
+  res.json(resObj);
 })
 
 
