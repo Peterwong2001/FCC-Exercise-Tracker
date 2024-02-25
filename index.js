@@ -61,7 +61,7 @@ app.post("/api/users", bodyParser.urlencoded({ extended: false }), function(req,
 app.get("/api/users", function(req, res) {
   User.find({})
       .exec(function(err, list) {
-      if (!err) {
+        if (!err) {
         res.json(list)
       }
   })
@@ -71,7 +71,7 @@ mongoose.set('useFindAndModify', false);
 
 // to submit and save details
 app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false }), function(req, res) {
-  let userId = req.params._id
+  let userId = req.params._id;
   let newTracker = new Tracker({
     date: req.body.date,
     duration: parseInt(req.body.duration),
@@ -98,8 +98,21 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
   )
 })
 
-
-
+// get request to retriece full exercise log of user
+app.get("/api/users/:_id/logs", function(req, res) {
+  let userId = req.params._id;
+  
+  User.findById(userId)
+      .exec(function(err, list) {
+        if (!err) {
+          resObj["_id"] = list.id
+          resObj["username"] = list.username
+          resObj["count"] = list.log.length
+          resObj["log"] = list.log
+          res.json(resObj);
+        }
+  })
+})
 
 
 
