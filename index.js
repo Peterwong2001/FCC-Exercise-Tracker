@@ -141,7 +141,6 @@ app.get("/api/users/:_id/logs", function(req, res) {
         responseObj.log = responseObj.log.slice(0, limit)
       }
       res.json(responseObj)
-      console.log(limit);
       
     }
   })
