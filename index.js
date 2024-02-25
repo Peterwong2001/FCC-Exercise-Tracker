@@ -109,9 +109,14 @@ app.get("/api/users/:_id/logs", function(req, res) {
            
           
           resObj["_id"] = list.id
-          resObj["username"] = list.
+          resObj["username"] = list.username
           resObj["count"] = list.log.length
           res.json(resObj);
+          
+          
+          
+          
+          console.log("test", list.username);
         }
   })
 })
