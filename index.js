@@ -105,7 +105,7 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
 
 // get request to retrieve full exercise log of user
 app.get("/api/users/:_id/logs?", function(req, res) {
-  let userid = req.params._id
+  let userId = req.params._id
   
   console.log("req query = ", req.query.userid);
   
@@ -113,12 +113,12 @@ app.get("/api/users/:_id/logs?", function(req, res) {
     if(!err) {
       let responseObj = {}
       
-      if(req.query.from || req.query.to) {
+      if(req.params.from || req.params.to) {
         let fromDate = new Date(0)
         let toDate = new Date()
         
         if(req.query.from) {
-          fromDate = new Date(req.query.from)
+          fromDate = new Date(req.params.from)
         }
         fromDate = fromDate.getTime()
         toDate = toDate.getTime()
@@ -130,11 +130,11 @@ app.get("/api/users/:_id/logs?", function(req, res) {
         })
       }
       
-      if (req.query.limit) {
-        responseObj.log = responseObj.log.slice(0, req.query.limit)
+      if (req.params.limit) {
+        responseObj.log = responseObj.log.slice(0, req.params.limit)
       }
       
-      responseObj["_id"] = userid
+      responseObj["_id"] = userId
       responseObj["username"] = result.username
       responseObj["count"] = result.log.length
       responseObj["log"] = result.log.map(a => ({
