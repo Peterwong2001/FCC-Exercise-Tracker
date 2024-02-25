@@ -114,6 +114,8 @@ app.get("/api/users/:_id/logs", function(req, res) {
     if(!err) {
       let responseObj = {}
       
+      
+      
       responseObj["_id"] = userId
       responseObj["username"] = result.username
       responseObj["count"] = result.log.length
