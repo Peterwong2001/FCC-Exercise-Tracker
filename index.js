@@ -13,11 +13,7 @@ app.get('/', (req, res) => {
 });
 
 // cors
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
+
 
 //cors
 
@@ -111,7 +107,7 @@ app.get("/api/users/:_id/logs", function(req, res) {
   let userId = req.params._id;
   let from = req.query.from;
   let to = req.query.to;
-  let limit = req.query.limit
+  let limit = req.query.limit;
   
   User.findById(req.params._id, function(err, result) {
     if(!err) {
@@ -126,8 +122,30 @@ app.get("/api/users/:_id/logs", function(req, res) {
         date: new Date(a.date).toDateString()
       }))
       
-      
+      if(from || to) {
+        let fromDate = new Date(0)
+        let toDate = new Date()
+        
+        if(from) {
+          fromDate = new Date(from)
+        }
+        if(to) {
+          toDate = new Date(to)
+        }
+        fromDate = fromDate.getTime()
+        toDate = toDate.getTime()
+        
+        responseObj.log = responseObj.log.filter(function(tracker) {
+          let trackerDate = new Date(tracker.date).getTime()
+          
+          return trackerDate >= fromDate && trackerDate <= toDate
+        }) 
+      }
+      if(limit) {
+        responseObj.log = responseObj.log.slice(0, limit)
+      }
       res.json(responseObj)
+      console.log(limit);
       
     }
   })
