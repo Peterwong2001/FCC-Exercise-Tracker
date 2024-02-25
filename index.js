@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 require('dotenv').config();
 
 app.use(cors())
@@ -35,9 +36,14 @@ let userSchema = new mongoose.Schema({
 })
 
 let tracker = mongoose.model("Tracker", exerciseTrackerSchema);
-let user = mongoose.model("User", userSchema);
+let user = mongoose.model("Username", userSchema);
 
 let resObj = {};
+
+app.post("api/users", bodyParser.urlencoded({extended: false}), function(req, res) {
+  console.log("Hello");
+  res.json({})
+})
 
 
 
