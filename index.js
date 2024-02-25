@@ -103,7 +103,7 @@ app.get("/api/users/:_id/logs", function(req, res) {
   let userid = req.params._id
   User.findById(req.params._id, function(err, result) {
     if(!err) {
-      let responseObj = result
+      let responseObj = {}
       
       if(req.query.from || req.query.to) {
         let fromDate = new Date(0)
@@ -129,10 +129,9 @@ app.get("/api/users/:_id/logs", function(req, res) {
       responseObj["_id"] = userid
       responseObj["username"] = result.username
       responseObj["count"] = result.log.length
-      
+      responseObj["log"] = result.log
       res.json(responseObj)
-      
-      console.log(result.username);
+      console.log(result.log)
     }
   })
   
