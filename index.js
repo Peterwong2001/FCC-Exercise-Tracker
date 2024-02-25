@@ -115,6 +115,10 @@ app.get("/api/users/:_id/logs?", function(req, res) {
     if(!err) {
       let responseObj = {}
       
+      if(limit) {
+        responseObj.log.slice(0, limit)
+      }
+      
       
       
       responseObj["_id"] = userId
