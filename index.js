@@ -5,20 +5,21 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 require('dotenv').config();
 
-app.use(cors())
+app.use(cors());
 app.use(express.static('public'))
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
 
+// cors
+app.use(cors());
+
+//cors
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
 })
 
-
-
-////////////////////
 
 
 const connectDB = "mongodb+srv://user1:" + process.env.PASSWORD + "@cluster0.ofgm2es.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
@@ -95,7 +96,6 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
         resObj["duration"] = newTracker.duration
         resObj["date"] = new Date(newTracker.date).toDateString()
         res.json(resObj)
-        
       }
     }
   )
@@ -108,11 +108,9 @@ app.get("/api/users/:_id/logs", function(req, res) {
   let to = req.query.to;
   let limit = req.query.limit
   
-  
   User.findById(req.params._id, function(err, result) {
     if(!err) {
       let responseObj = {}
-      
       
       if(from || to) {
         let fromDate = new Date(0)
@@ -124,7 +122,6 @@ app.get("/api/users/:_id/logs", function(req, res) {
         if(to) {
           toDate = new Date(to)
         }
-        
         fromDate = fromDate.getTime()
         toDate = toDate.getTime()
         
@@ -132,15 +129,11 @@ app.get("/api/users/:_id/logs", function(req, res) {
           let trackerDate = new Date(tracker.date).getTime()
           
           return trackerDate >= fromDate && trackerDate <= toDate
-        })
-        
+        }) 
       }
-      
       if(limit) {
         responseObj.log.slice(0, limit)
       }
-      
-      
       responseObj["_id"] = userId
       responseObj["username"] = result.username
       responseObj["count"] = result.log.length
@@ -149,10 +142,6 @@ app.get("/api/users/:_id/logs", function(req, res) {
         duration: a.duration,
         date: new Date(a.date).toDateString()
       }))
-      
-      
-      
-      
       res.json(responseObj)
       
     }
