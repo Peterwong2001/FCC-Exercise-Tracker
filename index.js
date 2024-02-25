@@ -78,10 +78,11 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
   })
   
   if(newTracker.date === "") {
-    newTracker.date = new Date()
+    newTracker.date = new Date().toDateString()
   }
   User.findByIdAndUpdate(
     userId,
+    //userId
     {$push: {log: newTracker}},
     {new: true},
     function(err, update) {
@@ -90,7 +91,7 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
         resObj["username"] = update.username
         resObj["description"] = newTracker.description
         resObj["duration"] = newTracker.duration
-        resObj["date"] = new Date(newTracker.date).toDateString
+        resObj["date"] = new Date(newTracker.date).toDateString()
         res.json(resObj)
       }
     }
