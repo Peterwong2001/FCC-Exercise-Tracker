@@ -116,16 +116,6 @@ app.get("/api/users/:_id/logs?", function(req, res) {
       let responseObj = {}
       
       
-      responseObj["_id"] = userId
-      responseObj["username"] = result.username
-      responseObj["count"] = result.log.length
-      responseObj["log"] = result.log.map(a => ({
-        description: a.description,
-        duration: a.duration,
-        date: new Date(a.date).toDateString()
-      }))
-      
-      
       if(from || to) {
         let fromDate = new Date(0)
         let toDate = new Date()
@@ -140,11 +130,30 @@ app.get("/api/users/:_id/logs?", function(req, res) {
         fromDate = fromDate.getTime()
         toDate = toDate.getTime()
         
+        responseObj.log = responseObj.log.filter(function(tracker) {
+          let trackerDate = new Date(tracker.date).getTime()
+          
+          return trackerDate >= fromDate && trackerDate <= toDate
+        })
+        
       }
       
       if(limit) {
         responseObj.log.slice(0, limit)
       }
+      
+      
+      responseObj["_id"] = userId
+      responseObj["username"] = result.username
+      responseObj["count"] = result.log.length
+      responseObj["log"] = result.log.map(a => ({
+        description: a.description,
+        duration: a.duration,
+        date: new Date(a.date).toDateString()
+      }))
+      
+      
+      
       
       res.json(responseObj)
       
