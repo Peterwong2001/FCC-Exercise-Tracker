@@ -77,8 +77,12 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
     description: req.body.description 
   })
   
-  if(newTracker.date === "" || newTracker.date != Date) {
+  
+  
+  if(newTracker.date === "") {
     newTracker.date = new Date().toDateString()
+  } else {
+    newTracker.date = new Date(newTracker.date).toDateString()
   }
   User.findByIdAndUpdate(
     userId,
