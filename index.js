@@ -40,19 +40,27 @@ let User = mongoose.model("User", userSchema);
 
 let resObj = {};
 
+// to submit and save new user
 app.post("/api/users", bodyParser.urlencoded({ extended: false }), function(req, res) {
   let newUser = new User({username: req.body.username})
   newUser.save(function(err, saved) {
     if(!err) {
       resObj["username"] = saved.username
-      resObj["id"] = saved.id
-      res.json()
+      resObj["_id"] = saved.id
+      res.json(resObj)
     }
   })
-  
-  res.json(resObj);
 })
 
+// to get list of all users
+app.get("api/users", function(res, req) {
+  User.find({})
+      .exec(function(err, list) {
+      if (!err) {
+        res.json(arrayOfUsers)
+      }
+  })
+})
 
 
 
