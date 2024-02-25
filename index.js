@@ -59,11 +59,10 @@ app.post("/api/users", bodyParser.urlencoded({ extended: false }), function(req,
 
 // to get list of all users
 app.get("/api/users", function(req, res) {
-  User.find({})
-      .exec(function(err, list) {
-        if (!err) {
-        res.json(list)
-      }
+  User.find({}, function(err, list) {
+    if(!err) {
+      res.json(list)
+    }
   })
 })
 
@@ -102,7 +101,7 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
 app.get("/api/users/:_id/logs?", function(req, res) {
   let userid = req.params._id
   
-  console.log("req query = ", req.query.userid);
+  console.log("req query = ", req.query.username);
   
   User.findById(req.params._id, function(err, result) {
     if(!err) {
