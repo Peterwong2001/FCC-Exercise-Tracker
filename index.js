@@ -115,11 +115,6 @@ app.get("/api/users/:_id/logs?", function(req, res) {
     if(!err) {
       let responseObj = {}
       
-      if(limit) {
-        responseObj.log.slice(0, limit)
-      }
-      
-      
       
       responseObj["_id"] = userId
       responseObj["username"] = result.username
@@ -130,6 +125,26 @@ app.get("/api/users/:_id/logs?", function(req, res) {
         date: new Date(a.date).toDateString()
       }))
       
+      
+      if(from || to) {
+        let fromDate = new Date(0)
+        let toDate = new Date()
+        
+        if(from) {
+          fromDate = new Date(from)
+        }
+        if(to) {
+          toDate = new Date(to)
+        }
+        
+        fromDate = fromDate.getTime()
+        toDate = toDate.getTime()
+        
+      }
+      
+      if(limit) {
+        responseObj.log.slice(0, limit)
+      }
       
       res.json(responseObj)
       
