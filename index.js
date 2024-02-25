@@ -116,7 +116,7 @@ app.get("/api/users/:_id/logs", function(req, res) {
         toDate = toDate.getTime()
         
         responseObj.log = responseObj.log.filter(function(tracker) {
-          let trackerDate = new Date(tracker.date).getTime()
+          let trackerDate = new Date(tracker.date).getTime().toDateString()
           
           return trackerDate >= fromDate && trackerDate <= toDate
         })
