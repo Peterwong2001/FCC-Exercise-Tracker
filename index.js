@@ -21,7 +21,7 @@ const listener = app.listen(process.env.PORT || 3000, () => {
 ////////////////////
 
 
-const connectDB = "mongodb+srv://user1:"+ process.env.PASSWORD + "@cluster0.ofgm2es.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const connectDB = "mongodb+srv://user1:" + process.env.PASSWORD + "@cluster0.ofgm2es.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 mongoose.connect(connectDB, {useNewUrlParser: true, useUnifiedTopology: true});
 
 let exerciseTrackerSchema = new mongoose.Schema({
@@ -41,7 +41,7 @@ let user = mongoose.model("Username", userSchema);
 let resObj = {};
 
 app.post("api/users", bodyParser.urlencoded({extended: false}), function(req, res) {
-  console.log("Hello");
+  
   res.json({})
 })
 
