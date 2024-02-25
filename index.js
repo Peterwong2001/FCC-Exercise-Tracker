@@ -69,6 +69,7 @@ app.get("/api/users", function(req, res) {
 
 // to submit and save details
 app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false }), function(req, res) {
+  let userId = req.params._id
   let newTracker = new Tracker({
     date: req.body.date,
     duration: parseInt(req.body.description),
@@ -79,18 +80,8 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
     newTracker.date = new Date().toDateString
   }
   User.findByIdAndUpdate(
-    req.body._id,
-    {new: true},
-    function(err, update) {
-      if(!err) {
-        resObj["username"] = update.username
-        resObj["date"] = new Date(newTracker).toDateString
-        resObj["duration"] = newTracker.duration
-        resObj["description"] = newTracker.description
-        res.json(resObj);
-        console.log(req.body)
-      }
-    }
+    userId,
+    {$push: {log: newTracker}}
   )
 })
 
