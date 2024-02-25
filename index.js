@@ -102,22 +102,12 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
 app.get("/api/users/:_id/logs", function(req, res) {
   let userId = req.params._id;
   
-  User.findById(userId)
-      .exec(function(err, list) {
-        if (!err) {
-          
-           
-          
-          resObj["_id"] = list.id
-          resObj["username"] = list.username
-          resObj["count"] = list.log.length
-          res.json(resObj);
-          
-          
-          
-          
-          console.log("test", list.username);
-        }
+  User.findById(req.params._id, function(err, list) {
+    if (!err) {
+      let responceObject = list
+      resObj["count"] = list.log.length
+      res.json(resObj)
+    }
   })
 })
 
