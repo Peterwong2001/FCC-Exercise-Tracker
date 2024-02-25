@@ -132,12 +132,12 @@ app.get("/api/users/:_id/logs", function(req, res) {
       responseObj["log"] = result.log.map(a => ({
         description: a.description,
         duration: a.duration,
-        date: a.date
+        date: new Date(a.date).toDateString()
       }))
       
       
       res.json(responseObj)
-      console.log(result.log)
+      console.log(responseObj);
     }
   })
   
