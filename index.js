@@ -105,11 +105,13 @@ app.get("/api/users/:_id/logs", function(req, res) {
   User.findById(userId)
       .exec(function(err, list) {
         if (!err) {
+          
+           
+          
           resObj["_id"] = list.id
-          resObj["username"] = list.username
+          resObj["username"] = list.
           resObj["count"] = list.log.length
           res.json(resObj);
-          console.log(list.description)
         }
   })
 })
