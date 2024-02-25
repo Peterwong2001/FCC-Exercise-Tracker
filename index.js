@@ -26,15 +26,15 @@ mongoose.connect(connectDB, {useNewUrlParser: true, useUnifiedTopology: true});
 
 
 
-let userSchema = new mongoose.Schema({
-  username: {type: String, required: true},
-  log: [exerciseTrackerSchema]
-})
-
 let exerciseTrackerSchema = new mongoose.Schema({
   description: {type: String, required: true},
   duration: {type: Number, required: true},
   date: String
+})
+
+let userSchema = new mongoose.Schema({
+  username: {type: String, required: true},
+  log: [exerciseTrackerSchema]
 })
 
 
@@ -69,9 +69,16 @@ app.get("/api/users", function(req, res) {
 
 // to submit and save details
 app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false}), function(req, res) {
-  let newTracker = new ExerciseTracker(
-      
-  )
+  let newTracker = new ExerciseTracker({
+    description: req.body.description,
+    duration: parseInt(req.body.duration),
+    date: req.body.date
+  })
+  if (newTracker === "") {
+    newTracker.date = new Date().toISOString().toJSON().slice(0, 10);
+  }
+  User.findByIdAndUpdate()
+  res.json(resObj);
 })
 
 
