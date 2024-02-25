@@ -24,19 +24,24 @@ const listener = app.listen(process.env.PORT || 3000, () => {
 const connectDB = "mongodb+srv://user1:" + process.env.PASSWORD + "@cluster0.ofgm2es.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 mongoose.connect(connectDB, {useNewUrlParser: true, useUnifiedTopology: true});
 
-let exerciseTrackerSchema = new mongoose.Schema({
-  description: {type: String, required: true},
-  duration: {type: Number, required: true},
-  date: String
-})
+
 
 let userSchema = new mongoose.Schema({
   username: {type: String, required: true},
   log: [exerciseTrackerSchema]
 })
 
-let ExerciseTracker = mongoose.model("Tracker", exerciseTrackerSchema);
+let exerciseTrackerSchema = new mongoose.Schema({
+  description: {type: String, required: true},
+  duration: {type: Number, required: true},
+  date: String
+})
+
+
+
 let User = mongoose.model("User", userSchema);
+let ExerciseTracker = mongoose.model("Tracker", exerciseTrackerSchema);
+
 
 let resObj = {};
 
@@ -53,15 +58,21 @@ app.post("/api/users", bodyParser.urlencoded({ extended: false }), function(req,
 })
 
 // to get list of all users
-app.get("api/users", function(res, req) {
+app.get("/api/users", function(req, res) {
   User.find({})
       .exec(function(err, list) {
       if (!err) {
-        res.json(arrayOfUsers)
+        res.json(list)
       }
   })
 })
 
+// to submit and save details
+app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false}), function(req, res) {
+  let newTracker = new ExerciseTracker(
+      
+  )
+})
 
 
 
