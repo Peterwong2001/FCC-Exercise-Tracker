@@ -108,12 +108,8 @@ app.get("/api/users/:_id/logs", function(req, res) {
           resObj["_id"] = list.id
           resObj["username"] = list.username
           resObj["count"] = list.log.length
-          resObj["log"] = [{
-            description: newTracker.description,
-            duration: newTracker.duration,
-            date: 
-          }]
           res.json(resObj);
+          console.log(list.description)
         }
   })
 })
