@@ -1,9 +1,10 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+require('dotenv').config();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-require('dotenv').config();
+
 
 app.use(cors());
 app.use(express.static('public'))
@@ -12,7 +13,11 @@ app.get('/', (req, res) => {
 });
 
 // cors
-app.use(cors());
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 
 //cors
 
@@ -112,28 +117,6 @@ app.get("/api/users/:_id/logs", function(req, res) {
     if(!err) {
       let responseObj = {}
       
-      if(from || to) {
-        let fromDate = new Date(0)
-        let toDate = new Date()
-        
-        if(from) {
-          fromDate = new Date(from)
-        }
-        if(to) {
-          toDate = new Date(to)
-        }
-        fromDate = fromDate.getTime()
-        toDate = toDate.getTime()
-        
-        responseObj.log = responseObj.log.filter(function(tracker) {
-          let trackerDate = new Date(tracker.date).getTime()
-          
-          return trackerDate >= fromDate && trackerDate <= toDate
-        }) 
-      }
-      if(limit) {
-        responseObj.log.slice(0, limit)
-      }
       responseObj["_id"] = userId
       responseObj["username"] = result.username
       responseObj["count"] = result.log.length
@@ -142,6 +125,8 @@ app.get("/api/users/:_id/logs", function(req, res) {
         duration: a.duration,
         date: new Date(a.date).toDateString()
       }))
+      
+      
       res.json(responseObj)
       
     }
