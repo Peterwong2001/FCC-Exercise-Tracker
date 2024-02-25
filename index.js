@@ -70,28 +70,17 @@ app.get("/api/users", function(req, res) {
 // to submit and save details
 app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false }), function(req, res) {
   let newTracker = new Tracker({
-    description: req.body.description,
-    duration: parseInt(req.body.duration),
+    description: req.body.description, 
+    duration: parseInt(req.body.description), 
     date: req.body.date
   })
-  if (newTracker.date === "") {
+  
+  if(newTracker.date === "") {
     newTracker.date = new Date().toDateString
-      //.toISOString().toJSON().slice(0, 10);
   }
   User.findByIdAndUpdate(
     req.body.userId,
-    {$push: {log: newTracker}},
-    {new: true},
-    function(err, updated) {
-      if (!err) {
-        resObj["_id"] = updated.id
-        resObj["username"] = updated.username
-        resObj["description"] = newTracker.description
-        resObj["duration"] = newTracker.duration
-        resObj["date"] = new Date(newTracker.date).toUTCString()
-        res.json(resObj)
-      }
-    }
+    {$push: {log: newT}}
   )
 })
 
