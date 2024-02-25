@@ -99,8 +99,10 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
 })
 
 // get request to retrieve full exercise log of user
-app.get("/api/users/:_id/logs", function(req, res) {
+app.get("/api/users/:_id/logs?", function(req, res) {
   let userid = req.params._id
+  
+  console.log("req query = ", req.query.userid);
   
   User.findById(req.params._id, function(err, result) {
     if(!err) {
@@ -138,7 +140,7 @@ app.get("/api/users/:_id/logs", function(req, res) {
       
       
       res.json(responseObj)
-      console.log(req.query._id);
+      
     }
   })
   
