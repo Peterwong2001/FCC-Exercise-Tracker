@@ -99,7 +99,15 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
 })
 
 // get request to retriece full exercise log of user
-
+app.get("/api/users/:_id/logs", function(req, res) {
+  let userId = req.params._id;
+  
+  User.findById(userId, function(err, user) {
+    if (!err) {
+      
+    }
+  })
+})
 
 
 
