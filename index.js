@@ -27,6 +27,7 @@ mongoose.connect(connectDB, {useNewUrlParser: true, useUnifiedTopology: true});
 
 
 let exerciseTrackerSchema = new mongoose.Schema({
+  id: {type: String, required: true},
   description: {type: String, required: true},
   duration: {type: Number, required: true},
   date: String
@@ -72,6 +73,7 @@ mongoose.set('useFindAndModify', false);
 app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false }), function(req, res) {
   let userId = req.params._id;
   let newTracker = new Tracker({
+    id: req.body._id,
     date: req.body.date,
     duration: parseInt(req.body.duration),
     description: req.body.description 
@@ -94,8 +96,9 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
         resObj["duration"] = newTracker.duration
         resObj["date"] = new Date(newTracker.date).toDateString()
         res.json(resObj)
-        console.log(req.body.id);
+        
       }
+      console.log(req.body.id);
     }
   )
 })
@@ -104,7 +107,7 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
 app.get("/api/users/:_id/logs?", function(req, res) {
   let userid = req.params._id
   
-  console.log("req query = ", req.query.username);
+  console.log("req query = ", req.query.userid);
   
   User.findById(req.params._id, function(err, result) {
     if(!err) {
