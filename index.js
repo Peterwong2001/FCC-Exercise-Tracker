@@ -67,21 +67,34 @@ app.get("/api/users", function(req, res) {
   })
 })
 
+mongoose.set('useFindAndModify', false);
+
 // to submit and save details
 app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false }), function(req, res) {
   let userId = req.params._id
   let newTracker = new Tracker({
     date: req.body.date,
-    duration: parseInt(req.body.description),
+    duration: parseInt(req.body.duration),
     description: req.body.description 
   })
   
   if(newTracker.date === "") {
-    newTracker.date = new Date().toDateString
+    newTracker.date = new Date().toDateString()
   }
   User.findByIdAndUpdate(
     userId,
-    {$push: {log: newTracker}}
+    {$push: {log: newTracker}},
+    {new: true},
+    function(err, update) {
+      if (!err) {
+        resObj["_id"] = update.id
+        resObj["username"] = update.username
+        resObj["date"] = new Date(newTracker.date).toDateString()
+        resObj["duration"] = newTracker.duration
+        resObj["description"] = newTracker.description
+        res.json(resObj)
+      }
+    }
   )
 })
 
