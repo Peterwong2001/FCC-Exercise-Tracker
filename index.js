@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
 require('dotenv').config();
 
 app.use(cors())
@@ -18,23 +17,35 @@ const listener = app.listen(process.env.PORT || 3000, () => {
 
 
 
+////////////////////
+
+
 const connectDB = "mongodb+srv://user1:"+ process.env.PASSWORD + "@cluster0.ofgm2es.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 mongoose.connect(connectDB, {useNewUrlParser: true, useUnifiedTopology: true});
 
 let exerciseTrackerSchema = new mongoose.Schema({
-  username: String,
-  description: String,
-  duration: Number,
-  date: Date,
-  _id: String,
-  count: Number
+  description: {type: String, required: true},
+  duration: {type: Number, required: true},
+  date: String
 })
 
-let exerciseTracker = mongoose.model("exerciseTracker", exerciseTrackerSchema);
+let userSchema = new mongoose.Schema({
+  username: {type: String, required: true},
+  log: [exerciseTrackerSchema]
+})
+
+let tracker = mongoose.model("Tracker", exerciseTrackerSchema);
+let user = mongoose.model("User", userSchema);
 
 let resObj = {};
 
 
-app.post("/api/users/:get", function(res, req) {
-  res.json(resObj);
-})
+
+
+
+
+
+
+
+
+
