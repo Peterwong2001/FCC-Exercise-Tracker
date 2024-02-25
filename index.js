@@ -80,8 +80,7 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
   })
   
   if(newTracker.date === "") {
-    newTracker.date = new Date().toISOString().substring(0, 10)
-      //.toDateString()
+    newTracker.date = new Date().toDateString()
   }
   User.findByIdAndUpdate(
     userId,
@@ -98,13 +97,12 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
         res.json(resObj)
         
       }
-      console.log(req.body.id);
     }
   )
 })
 
 // get request to retrieve full exercise log of user
-app.get("/api/users/:_id/logs?", function(req, res) {
+app.get("/api/users/:_id/logs", function(req, res) {
   let userId = req.params._id;
   let from = req.query.from;
   let to = req.query.to;
