@@ -100,10 +100,41 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
 
 // get request to retrieve full exercise log of user
 app.get("/api/users/:_id/logs", function(req, res) {
-  let userId = req.params._id;
-  
-  
-  res.json(resObj);
+  let userid = req.params._id
+  User.findById(req.params._id, function(err, result) {
+    if(!err) {
+      let responseObj = result
+      
+      if(req.query.from || req.query.to) {
+        let fromDate = new Date(0)
+        let toDate = new Date()
+        
+        if(req.query.from) {
+          fromDate = new Date(req.query.from)
+        }
+        fromDate = fromDate.getTime()
+        toDate = toDate.getTime()
+        
+        responseObj.log = responseObj.log.filter(function(tracker) {
+          let trackerDate = new Date(tracker.date).getTime()
+          
+          return trackerDate >= fromDate && trackerDate <= toDate
+        })
+      }
+      
+      if (req.query.limit) {
+        responseObj.log = responseObj.log.slice(0, req.query.limit)
+      }
+      
+      responseObj["_id"] = userid
+      responseObj["username"] = result.username
+      responseObj["count"] = result.log.length
+      
+      res.json(responseObj)
+      
+      console.log(result.username);
+    }
+  })
   
 })
 
