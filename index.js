@@ -100,40 +100,11 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
 
 // get request to retrieve full exercise log of user
 app.get("/api/users/:_id/logs", function(req, res) {
-  let id = req.params._id;
-  const { from, to, limit } = req.query;
-  const user = User.findById(id);
+  let userId = req.params._id;
   
-  let dateObj = {}
-  if (from) {
-    dateObj["$gte"] = new Date(from)
-  }
-  if (to) {
-    dateObj["$lte"] = new Date(to)
-  }
-  let filter = {
-    user_id: id
-  }
-  if (from || to) {
-    filter.date = dateObj;
-  }
   
-  const exercises = Tracker.find(filter).limit()
-  
-  const log = exercises.map(e => ({
-    description: e.description,
-    duration: e.duration,
-    date: e.date.toDateString()
-  }))
-  
-  res.json({
-    username: user.username,
-    count: exercises.length,
-    _id: user._id,
-    log
-  })
+  res.json(resObj);
   
 })
-
 
 
