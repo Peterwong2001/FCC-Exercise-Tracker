@@ -89,9 +89,9 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
       if (!err) {
         resObj["_id"] = update.id
         resObj["username"] = update.username
-        resObj["date"] = new Date(newTracker.date).toDateString()
-        resObj["duration"] = newTracker.duration
         resObj["description"] = newTracker.description
+        resObj["duration"] = newTracker.duration
+        resObj["date"] = new Date(newTracker.date).toDateString()
         res.json(resObj)
       }
     }
@@ -129,7 +129,13 @@ app.get("/api/users/:_id/logs", function(req, res) {
       responseObj["_id"] = userid
       responseObj["username"] = result.username
       responseObj["count"] = result.log.length
-      responseObj["log"] = result.log
+      responseObj["log"] = result.log.map(a => ({
+        description: a.description,
+        duration: a.duration,
+        date: a.date
+      }))
+      
+      
       res.json(responseObj)
       console.log(result.log)
     }
