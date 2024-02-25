@@ -40,7 +40,7 @@ let userSchema = new mongoose.Schema({
 
 
 let User = mongoose.model("User", userSchema);
-let ExerciseTracker = mongoose.model("Tracker", exerciseTrackerSchema);
+let Tracker = mongoose.model("Tracker", exerciseTrackerSchema);
 
 
 let resObj = {};
@@ -68,14 +68,15 @@ app.get("/api/users", function(req, res) {
 })
 
 // to submit and save details
-app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false }), function(res, req) {
-  let newTracker = new ExerciseTracker({
+app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false }), function(req, res) {
+  let newTracker = new Tracker({
     description: req.body.description,
     duration: parseInt(req.body.duration),
     date: req.body.date
   })
   if (newTracker.date === "") {
-    newTracker.date = new Date().toISOString().toJSON().slice(0, 10);
+    newTracker.date = new Date().toDateString
+      //.toISOString().toJSON().slice(0, 10);
   }
   User.findByIdAndUpdate(
     req.body.userId,
