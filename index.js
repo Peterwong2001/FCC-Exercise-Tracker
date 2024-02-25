@@ -12,10 +12,6 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
 
-// cors
-
-
-//cors
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
@@ -32,7 +28,7 @@ let exerciseTrackerSchema = new mongoose.Schema({
   id: {type: String, required: true},
   description: {type: String, required: true},
   duration: {type: Number, required: true},
-  date: {type: String, required: true}
+  date: String
 })
 
 let userSchema = new mongoose.Schema({
