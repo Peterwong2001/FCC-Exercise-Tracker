@@ -72,14 +72,14 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
   let userId = req.params._id;
   let newTracker = new Tracker({
     id: req.body._id,
-    date: new Date(req.body.date),
+    date: new Date(req.body.date).toDateString(),
     duration: parseInt(req.body.duration),
     description: req.body.description 
   })
   
   
   
-  if(newTracker.date === "") {
+  if(req.body.date === ""|| req.body.date != new Date) {
     newTracker.date = new Date().toDateString()
   }
   User.findByIdAndUpdate(
@@ -112,15 +112,13 @@ app.get("/api/users/:_id/logs", function(req, res) {
     if(!err) {
       let responseObj = {}
       
-      
-      
       responseObj["_id"] = userId
       responseObj["username"] = result.username
       responseObj["count"] = result.log.length
       responseObj["log"] = result.log.map(a => ({
         description: a.description,
         duration: a.duration,
-        date: new Date(a.date).toDateString()
+        date: a.date
       }))
       
       if(from || to) {
