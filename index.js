@@ -79,7 +79,7 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
   
   
   
-  if(req.body.date === "") {
+  if(req.body.date === "" || req.body.date === Symbol.for("Invalid Date")) {
     newTracker.date = new Date().toDateString()
   }
   User.findByIdAndUpdate(
@@ -120,6 +120,8 @@ app.get("/api/users/:_id/logs", function(req, res) {
         duration: a.duration,
         date: a.date
       }))
+      
+     if (responseObj.log.date === Symbol.for(""))
       
       if(from || to) {
         let fromDate = new Date(0)
