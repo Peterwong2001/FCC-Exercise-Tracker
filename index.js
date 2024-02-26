@@ -121,7 +121,7 @@ app.get("/api/users/:_id/logs", function(req, res) {
         date: a.date
       }))
       
-     if (responseObj.log.date === ) {
+     if (Symbol.for(responseObj.log.date) === Symbol.for("Invalid Date")) {
          responseObj.log.date = new Date().toDateString()
          }
       
