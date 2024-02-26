@@ -28,7 +28,7 @@ let exerciseTrackerSchema = new mongoose.Schema({
   id: {type: String, required: true},
   description: {type: String, required: true},
   duration: {type: Number, required: true},
-  date: String
+  date: {type: String, default: new Date().toDateString}
 })
 
 let userSchema = new mongoose.Schema({
@@ -72,7 +72,7 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
   let userId = req.params._id;
   let newTracker = new Tracker({
     id: req.body._id,
-    date: new Date(req.body.date *),
+    date: new Date(req.body.date),
     duration: parseInt(req.body.duration),
     description: req.body.description 
   })
@@ -93,7 +93,7 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
         resObj["username"] = update.username
         resObj["description"] = newTracker.description
         resObj["duration"] = newTracker.duration
-        resObj["date"] = newTracker.date
+        resObj["date"] = new Date(newTracker.date).toDateString()
         
         res.json(resObj)
       }
