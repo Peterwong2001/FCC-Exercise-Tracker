@@ -72,7 +72,7 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
   let userId = req.params._id;
   let newTracker = new Tracker({
     id: req.body._id,
-    date: req.body.date,
+    date: new Date(req.body.date),
     duration: parseInt(req.body.duration),
     description: req.body.description 
   })
@@ -82,7 +82,7 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
   if(newTracker.date === "") {
     newTracker.date = new Date().toDateString()
   } else {
-    newTracker.date = new Date(newTracker.date).toDateString()
+    newTracker.date = new Date().toDateString()
   }
   User.findByIdAndUpdate(
     userId,
@@ -95,7 +95,7 @@ app.post("/api/users/:_id/exercises", bodyParser.urlencoded({ extended: false })
         resObj["username"] = update.username
         resObj["description"] = newTracker.description
         resObj["duration"] = newTracker.duration
-        resObj["date"] = new Date(newTracker.date).toDateString()
+        resObj["date"] = newTracker.date
         
         res.json(resObj)
       }
